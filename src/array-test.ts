@@ -1,3 +1,4 @@
+// To run use: npx ts-node array-test.ts
 
 const a: number[] = [];
 
