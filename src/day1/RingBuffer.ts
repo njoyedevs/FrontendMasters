@@ -39,26 +39,31 @@ class RingBuffer<T> {
     }
 
     resize(newSize: number): void {
-        if (newSize < 1) {
+      if (newSize < 1) {
           throw new Error("RingBuffer size must be greater than 0");
-        }
-      
-        const newBuffer: T[] = new Array<T>(newSize);
-        let newIndex = 0;
-      
-        for (let i = this.startIndex; i !== this.endIndex; i = (i + 1) % this.size) {
-          if (newIndex < newSize) {
-            newBuffer[newIndex++] = this.buffer[i];
-          } else {
-            break;
-          }
-        }
-      
-        this.buffer = newBuffer;
-        this.size = newSize;
-        this.startIndex = 0;
-        this.endIndex = newIndex;
       }
+  
+      const newBuffer: T[] = new Array<T>(newSize);
+      let newIndex = 0;
+  
+      for (let i = this.startIndex; i !== this.endIndex; i = (i + 1) % this.size) {
+          if (newIndex < newSize) {
+              newBuffer[newIndex++] = this.buffer[i];
+          } else {
+              break;
+          }
+      }
+  
+      this.buffer = newBuffer;
+      this.size = newSize;
+      this.startIndex = 0;
+      this.endIndex = newIndex;
+  
+      if (newIndex === newSize && newSize > this.size) {
+          this.startIndex = (this.startIndex + newSize - this.size) % newSize;
+      }
+  }
+  
       
 }
 
