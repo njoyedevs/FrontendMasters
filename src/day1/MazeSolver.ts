@@ -1,4 +1,5 @@
 
+// All the directions possible
 const dir = [
     [-1, 0],
     [1, 0],
@@ -6,6 +7,7 @@ const dir = [
     [0, 1]
 ];
 
+// Walking base cases and 3 recurse functions (pre, recurse, post)
 function walk(maze: string[], wall: string, curr: Point, end: Point, seen: boolean[][], path: Point[]): boolean {
 
     // Base Cases
@@ -31,9 +33,11 @@ function walk(maze: string[], wall: string, curr: Point, end: Point, seen: boole
     }
 
     // 3 recurse functions
+
     // pre
     seen[curr.y][curr.x] = true;
     path.push(curr);
+
     // recurse
     for (let i = 0; i < dir.length; ++i) {
         const [x, y] = dir[i];
