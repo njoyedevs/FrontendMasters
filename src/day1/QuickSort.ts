@@ -1,5 +1,16 @@
 // we could return the number[] but the quick_sort function is returning void
 function qs(arr: number[], lo: number, hi: number): void {
+
+    // Base Case - end recursing
+    if (lo >= hi) {
+        return ;
+    }
+
+    const pivotIdx = partition(arr, lo, hi);
+
+    // recures quick_sort without including pivotIdx
+    qs(arr, lo, pivotIdx - 1);
+    qs(arr, pivotIdx + 1, hi);
 }
 
 // the partition returns the pivot to the quick_sort function
