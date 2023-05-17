@@ -111,13 +111,6 @@ export default class DoublyLinkedList<T> {
             return out;
         }
 
-        if (node === this.head) {
-            this.head = node.next;
-        }
-        if (node === this.tail) {
-            this.tail = node.prev;
-        }
-
         // Assign new curr.prev and new curr.next prior to remove curr
         if(node.prev) {
             node.prev.next = node.next;
@@ -125,6 +118,13 @@ export default class DoublyLinkedList<T> {
 
         if(node.next) {
             node.next.prev = node.prev;
+        }
+
+        if (node === this.head) {
+            this.head = node.next;
+        }
+        if (node === this.tail) {
+            this.tail = node.prev;
         }
 
         // We should have two separate lists now as we removed node
