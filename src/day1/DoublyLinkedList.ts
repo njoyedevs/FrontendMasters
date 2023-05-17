@@ -11,136 +11,136 @@ export default class DoublyLinkedList<T> {
 
     constructor() {
         this.length = 0;
+        this.head = undefined;
     }
 
     prepend(item: T): void {
-        const node: Node<T> = { value: item, next: this.head };
-        if (this.head) {
-            this.head.prev = node;
-        }
-        this.head = node;
-        if (!this.tail) {
-            this.tail = node;
-        }
+        const node = {value: item} as Node<T>;
+
         this.length++;
+        if(!this.head) {
+            this.head = this.tail = node;
+            return;
+        }
+
+        node.next = this.head;
+        this.head.prev = node;
+        this.head = node;
     }
 
     insertAt(item: T, idx: number): void {
-        if (idx < 0 || idx > this.length) {
-            throw new Error("Index out of bounds");
+        
+        if(idx > this.length) {
+            throw new Error("on no");
         }
-    
-        if (idx === 0) {
+        
+        if(idx === this.length) {
+            this.append(item);
+        } else if (idx === 0) {
             this.prepend(item);
             return;
         }
-    
-        if (idx === this.length) {
-            this.append(item);
-            return;
-        }
-    
-        let currentNode = this.head;
-        let currentIdx = 0;
-    
-        while (currentNode && currentIdx < idx) {
-            currentNode = currentNode.next;
-            currentIdx++;
-        }
-    
-        if (currentNode && currentNode.prev) {
-            const newNode: Node<T> = { value: item, next: currentNode, prev: currentNode.prev };
-            currentNode.prev.next = newNode;
-            currentNode.prev = newNode;
-            this.length++;
+        
+        this.length++;
+        const curr = this.getAt(idx) as Node<T>;
+        const node = {value: item} as Node<T>;
+
+        node.next = curr;
+        node.prev = curr.prev;
+        curr.prev = node;
+        
+        if(node.prev) {
+            node.prev.next = node;
         }
     }
 
     append(item: T): void {
-        const node: Node<T> = { value: item, prev: this.tail };
-        if (this.tail) {
-            this.tail.next = node;
-        }
-        this.tail = node;
-        if (!this.head) {
-            this.head = node;
-        }
+
         this.length++;
+        const node = {value: item} as Node<T>;
+
+        if(!this.tail) {
+            this.head = this.tail = node;
+            return;
+        }
+
+        node.prev = this.tail;
+        this.tail.next = node;
+        this.tail = node;
     }
 
     remove(item: T): T | undefined {
-        let currentNode = this.head;
 
-        while (currentNode) {
-            if (currentNode.value === item) {
-                if (currentNode.prev) {
-                    currentNode.prev.next = currentNode.next;
-                } else {
-                    this.head = currentNode.next;
-                }
+        let curr = this.head;
 
-                if (currentNode.next) {
-                    currentNode.next.prev = currentNode.prev;
-                } else {
-                    this.tail = currentNode.prev;
-                }
+        for(let i = 0; curr && i < this.length; ++i) {
 
-                this.length--;
-                return item;
+            if(curr.value === item) {
+                break;
             }
-
-            currentNode = currentNode.next;
+            curr = curr.next;
         }
 
-        return undefined;
+        if(!curr) {
+            return undefined;
+        }
+
+        return this.removeNode(curr);
     }
 
     get(idx: number): T | undefined {
-        if (idx < 0 || idx >= this.length) {
-            throw new Error("Index out of bounds");
-        }
-
-        let currentNode = this.head;
-        let currentIdx = 0;
-
-        while (currentIdx < idx) {
-            currentNode = currentNode?.next;
-            currentIdx++;
-        }
-
-        return currentNode?.value;
+        return this.getAt(idx)?.value;
     }
 
     removeAt(idx: number): T | undefined {
-        if (idx < 0 || idx >= this.length) {
-            throw new Error("Index out of bounds");
+        const node = this.getAt(idx);
+
+        if(!node) {
+            return undefined;
         }
-    
-        let currentNode = this.head;
-        let currentIdx = 0;
-    
-        while (currentNode && currentIdx < idx) {
-            currentNode = currentNode.next;
-            currentIdx++;
+
+        return this.removeNode(node);
+    }
+
+    private removeNode(node: Node<T>): T | undefined {
+        this.length--;
+
+        if(this.length === 0) {
+            const out = this.head?.value;
+            this.head = this.tail = undefined;
+            return out;
         }
-    
-        if (currentNode) {
-            if (currentNode.prev) {
-                currentNode.prev.next = currentNode.next;
-            } else {
-                this.head = currentNode.next;
-            }
-    
-            if (currentNode.next) {
-                currentNode.next.prev = currentNode.prev;
-            } else {
-                this.tail = currentNode.prev;
-            }
-    
-            this.length--;
-            return currentNode.value;
+
+        if (node === this.head) {
+            this.head = node.next;
         }
-    
-        return undefined;
+        if (node === this.tail) {
+            this.tail = node.prev;
+        }
+
+        // Assign new curr.prev and new curr.next prior to remove curr
+        if(node.prev) {
+            node.prev.next = node.next;
+        }
+
+        if(node.next) {
+            node.next.prev = node.prev;
+        }
+
+        // We should have two separate lists now as we removed node
+        node.prev = node.next = undefined;
+        return node.value;
+    }
+
+    private getAt(idx: number): Node<T> | undefined {
+
+        let curr = this.head;
+        for(let i = 0; curr && i < idx; ++i) {
+            curr = curr.next;
+        }
+        return curr;
     }
 }
+
+const test: DoublyLinkedList<undefined> = new DoublyLinkedList<undefined>();
+console.log('Test for DoublyLinkedList<undefined>: ', test);
