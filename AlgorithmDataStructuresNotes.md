@@ -455,7 +455,7 @@ For a stock chart, which day is the best day to invest?
 2. Starting at root, recurse the left side
 3. Go back to root and recurse down right side
 
-Order: [7, 23, 5, 4, 3, 18, 21]
+Order: 7, 23, 5, 4, 3, 18, 21
 
 ```
        7
@@ -496,7 +496,7 @@ export default function pre_order_search(head: BinaryNode<number>): number[] {
 4. Recurse right until reaching far left leaf
 5. Then print values until reaching bottom right of tree
 
-Order: [5, 23, 4, 7, 18, 3, 21]
+Order: 5, 23, 4, 7, 18, 3, 21
 
 ```
        7
@@ -541,7 +541,7 @@ export default function in_order_search(head: BinaryNode<number>): number[] {
 8. Then print the values on the level above and son on until root.
 9. Then print root
 
-Order: [5, 4, 23, 18, 21, 3, 7]
+Order: 5, 4, 23, 18, 21, 3, 7
 
 ```
        7
@@ -588,7 +588,7 @@ So, if we had to do half the tree shifting off, we would have to do n amount of 
 * A queue should be used to perform BFS
 * No need to use recursion
 
-Order: [7, 23, 3, 5, 4, 18, 21]
+Order: 7, 23, 3, 5, 4, 18, 21
 
 ```
        7
