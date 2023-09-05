@@ -737,6 +737,7 @@ export default function compare(a: BinaryNode<number> | null, b: BinaryNode<numb
 * Calculate the parent node for the left and right children index
     * Left & Right Child: Math.floor((child index - 1) / 2)
 * Locate the last node index by keeping track of the length of the array (Heap)
+* Can be cused for priorities and thread scheduling. 
 
 Indices: [0,   1,  2,  3,   4,  5,  6]
 Order:   [50, 71, 80, 101, 80, 90, 101]
@@ -748,3 +749,154 @@ Order:   [50, 71, 80, 101, 80, 90, 101]
  /   \     /  \
 101  80  90    101
 ```
+
+* LogN is the time complexity for insertion and deletion
+    * This is because you have to bubble up or down to the correct level
+* Fibinacci Heap is a more complex heap that has O(1) insertion and deletion
+    * This is because it is a tree of trees
+    * However, it is not used in practice because it is so complex
+
+* Garbage can collect in heap, but not in stack.  This is because the stack is a contiguous block of memory and the heap is not.
+
+## Trie
+
+* They are pronounced Tree (its named after Re"trie"val Tree). So, its a Trie tree (but people keep calling them try trees / prefix / digital tree). These happen SO frequently in interviews, its outstanding! For the sake of being practical, lets go over them.
+
+### The trie
+* The easiest way to visualize a trie is to think of auto-complete. Lets go over it on the whiteboard.
+
+### Implementation
+* The trie is a tree, so we can use a node based structure such as a Double Linked List to implement a retrieval tree.
+
+### Diagram
+
+                      Root
+                      [26]
+                    /      \
+                   C        M
+                 /         /
+               a          a
+              / \        /
+             t   r      r
+            /  \  \    /
+           s    t  d  c
+
+### Characters
+* The characters are stored in a map of characters to nodes
+characters = {
+    a: Node,
+    b: Node,
+    c: Node,
+    d: Node,
+    e: Node,
+    f: Node,
+    g: Node,
+    h: Node,
+    i: Node,
+    j: Node,
+    k: Node,
+    l: Node,
+    m: Node,
+    n: Node,
+    o: Node,
+    p: Node,
+    q: Node,
+    r: Node,
+    s: Node,
+    t: Node,
+    u: Node,
+    v: Node,
+    w: Node,
+    x: Node,
+    y: Node,
+    z: Node,
+}
+### Node
+* Each node has a value and a map of characters to nodes
+Node {
+    isWord: boolean,
+    children: Map<character, Node>
+}
+
+### Insertion
+* Insertion is O(n) where n is the length of the word
+
+insertion(str):
+    curr = head
+    for c in str
+        if curr[c]
+            curr = curr[c]
+        else
+            node = cN()
+            curr[c] = node
+            curr = node\
+    
+    curr.isWord = true
+
+### Deletion
+* Deletion is O(n) where n is the length of the word
+
+deletion(str):
+    curr = head
+    for c in str
+        if curr[c]
+            curr = curr[c]
+        else
+            return false
+    
+    curr.isWord = false
+
+### Time Complexity
+* Insertion: O(n) where n is the length of the word
+* Search: O(n) where n is the length of the word
+* Space: O(n) where n is the length of the word
+
+### Use Cases
+* Auto-complete
+* Spell check
+* IP routing (longest prefix matching)
+* T9 predictive text
+* Solving word games (boggle, scrabble, etc)
+
+### Example
+* Lets say we have the following words: "a", "at", "ate", "cat", "cater", "caterer", "caterers", "catering", "caterings", "catered", "cater", "caterpilla
+
+## Graph
+* A series of nodes with a number of connections
+* All trees are graphs
+
+### Terminology
+* Cycle: When you start at Node(x), follow the links, and end back at Node(x). Must be 3 nodes to be a cycle.
+* Acyclic: A graph that contains no cycles.
+* Connected: When every node has a path to another node.
+* Directed: When there is a direction to the connection. Think Twitter undirected: !directed. Think Facebook ( i haven't been on in 10 years, it may have changed).
+* Weighted: The edges have a weight associated with them. Think Maps.
+* Dag: Directed, acyclic graph.
+
+### Implementation Terms
+* node: a point or vertex on the graph
+* edge: a connection betwix two nodes
+
+### Big O
+BigO is commonly stated in terms of V and E where V stands for vertices and E stands for edges.  So O(V * E) means that we will check every vertex, and on every vertex we check every edge.
+
+### Adjacency List
+* A list of lists where each list is a node and the list contains the nodes that it is connected to.
+* This is the most common way to implement a graph.
+* This is the most efficient way to implement a graph.
+* This plots out point in touple form (x, y) where x is the node and y is the node it is connected to.
+
+
+### Adjacency Matrix
+* O(V)^2
+* A matrix where each row and column is a node and the value is a boolean or number.
+* This is the least common way to implement a graph.
+* This is the least efficient way to implement a graph.
+* This plots out point row style where the row is an array of weights for each of the column header values.  The column header values are the nodes.
+
+### Basic Searches
+* BFS and DFS still exist on a graph, and they virtually no different than a tree.  The only difference is that you have to keep track of the nodes you have visited so that you don't get stuck in a cycle.
+
+### Demo
+* BFS on Adj. Matrix
+* DFS on Adj. List
